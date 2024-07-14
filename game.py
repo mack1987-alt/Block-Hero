@@ -19,8 +19,8 @@ class Game:
         
         print("Finding levels...")
         self.levels = [
-            {"background": "level1_bg.png", "enemies": 5, "clouds": 10},
-            {"background": "level2_bg.png", "enemies": 7, "clouds": 12},
+            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level1_bg.png", "enemies": 5, "clouds": 10},
+            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level2_bg.png", "enemies": 7, "clouds": 12},
             # Add more levels as needed
         ]
 
@@ -29,7 +29,7 @@ class Game:
         self.load_level(self.current_level)
 
         print("Finding menu bg...")
-        self.menu_background = pygame.image.load("/home/mcuser/block-hero-test/menu_bg.png")
+        self.menu_background = pygame.image.load("/home/mcuser/Documents/GitHub/Block-Hero/menu_bg.png")
         self.menu_background = pygame.transform.scale(self.menu_background, (MAX_WIDTH, HEIGHT))
 
         print("Finding time...")
