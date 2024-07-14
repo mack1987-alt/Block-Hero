@@ -13,10 +13,10 @@ class Player:
         self.green = GREEN
         self.shadow_color = SHADOW_COLOR
         self.ground_height = ground_height
-        print("Player initialized, ready for a proper go, eh!")
+        print("Player initialized...")
 
     def update(self, keys, gravity):
-        print("Player position:", self.rect.x, self.rect.y)
+        # print("Player position:", self.rect.x, self.rect.y)
         current_x = self.rect.x
 
         if keys[pygame.K_LEFT]:
@@ -24,8 +24,8 @@ class Player:
         if keys[pygame.K_RIGHT]:
             self.rect.x = min(self.rect.x + 5, 4000 - self.rect.width)
         
-        if current_x != self.rect.x:
-            print("Player is moving, makin' strides like a champ")
+        # if current_x != self.rect.x:
+    
 
         # Adjust jump condition to account for new ground position
         if keys[pygame.K_SPACE] and not self.jumping and self.rect.bottom == self.ground_height + 30:

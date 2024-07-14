@@ -61,12 +61,14 @@ class Game:
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                print("Game>handle_events>pygame quit.")
+                print("Quitting...")
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
-                if MAX_WIDTH - 40 <= mouse_x <= MAX_WIDTH - 10 and GROUND_HEIGHT + 10 <= mouse_y <= GROUND_HEIGHT + 40:
+                print(f"Mouse coordinates: ({mouse_x}, {mouse_y})")
+                
+                if MAX_WIDTH - 40 <= mouse_x <= MAX_WIDTH - 20 and 20 <= mouse_y <= 60:  # Update the collision detection for the pause button
                     if not self.paused:
                         self.paused = True
                         self.show_pause_menu()
@@ -154,21 +156,31 @@ class Game:
         for cloud in self.clouds:
             cloud.draw(self.screen, self.scroll)
 
-        # Show the player health UI bar
-        ui_bar_rect = pygame.Rect(10, GROUND_HEIGHT + 10, self.player.health * 2, 20)
+        # Show the player health UI bar at the bottom
+        # ui_bar_rect = pygame.Rect(10, GROUND_HEIGHT + 10, self.player.health * 2, 20)
+        # Show the player health UI bar at the top
+        ui_bar_rect = pygame.Rect(10, 30, self.player.health * 2, 20)
+
         pygame.draw.rect(self.screen, RED, ui_bar_rect)
-
-        # Show the health gauge text
+        
         health_text = self.player_health_font.render(f"Health: {self.player.health}%", True, WHITE)
-        self.screen.blit(health_text, (ui_bar_rect.right + 10, GROUND_HEIGHT + 10))
+        # Show the health gauge text at the bottom
+        # self.screen.blit(health_text, (ui_bar_rect.right + 10, GROUND_HEIGHT + 10))
+        # Show the health gauge text at the top
+        self.screen.blit(health_text, (ui_bar_rect.right + 10, 30))
 
-        # Draw the pause/settings button
-        pause_button_rect = pygame.Rect(MAX_WIDTH - 40, GROUND_HEIGHT + 10, 30, 30)
+        # Draw the pause/settings button at the bottom
+        # pause_button_rect = pygame.Rect(MAX_WIDTH - 40, GROUND_HEIGHT + 10, 30, 30)
+        # Draw the pause/settings button at the top
+        pause_button_rect = pygame.Rect(MAX_WIDTH - 40, 30, 30, 30)
         pygame.draw.rect(self.screen, BLACK, pause_button_rect)
 
-        # Draw the pause symbol (two white bars)
-        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X-10, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
-        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X + 2, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
+        # Draw the pause symbol (two white bars) at the bottom
+        # pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X-10, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
+        # pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X + 2, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
+        # Draw the pause symbol (two white bars) at the top
+        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X-10, 20 + PAUSE_SYMBOL_Y, 5, 15))
+        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X + 2, 20 + PAUSE_SYMBOL_Y, 5, 15))
 
         pygame.display.flip()
 
@@ -206,7 +218,6 @@ class Game:
             self.handle_events()
             self.update_entities()
             self.draw_entities()
-
             # Calculate scroll after updating entities
             self.scroll = max(min(self.player.rect.x - MAX_WIDTH // 2, 4000 - MAX_WIDTH), 0)
 
@@ -214,7 +225,7 @@ class Game:
             self.clock.tick(FPS)
 
             # Check if player lost
-            print(f"Player health: {self.player.health}")
+            # print(f"Player health: {self.player.health}")
             if self.player.health <= 0:
                 game_active = False  # Game over, buddy! Exit the loop
                 debug.pause_and_clear()
@@ -223,18 +234,18 @@ class Game:
         play_again = self.show_game_over_screen()
         if play_again == 1:
             # Player chose to play again, reset the game
-            print("reset_game")
+            print("Play again...")
             # debug.pause_and_clear()
             self.reset_game()
         elif play_again == 2:
             # Player chose to quit
-            print("pygame quit")
+            print("Quitting...")
             pygame.quit()
             sys.exit()
 
     # Update the show_game_over_screen method
     def show_game_over_screen(self):
-        print("show game over...")
+        print("Game over...")
         game_over_font = pygame.font.Font(None, 72)
         text = game_over_font.render("You Lost...", True, RED)
 
@@ -270,18 +281,16 @@ class Game:
   
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    print("Game>main_menu>pygame quit.")
+                    print("Quitting...")
                     debug.pause_and_clear()
                     pygame.quit()
                     sys.exit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     if play_rect.collidepoint(mouse_x, mouse_y):
-                        print("Game>main_menu> Play clicked")
                         self.reset_game()  # Reset the game state
                         return 1  # Return 1 for Play
                     elif quit_rect.collidepoint(mouse_x, mouse_y):
-                        print("Game>main_menu> Quit clicked")
                         debug.pause_and_clear()
                         self.quit_game()
                         return 2  # Return 2 for Quit
@@ -295,7 +304,7 @@ class Game:
 
     def show_menu(self):
         debug = Debug()
-        print("Game>show_menu")
+        print("Main menu...")
         debug.pause_and_clear()
         return self.main_menu()
     
