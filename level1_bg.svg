@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4000 600">
-  <!-- Background sky -->
+  <!-- Sky -->
   <rect width="4000" height="600" fill="lightblue" />
 
   <!-- Ground -->
@@ -7,4 +7,34 @@
 
   <!-- Sun -->
   <circle cx="2000" cy="100" r="50" fill="yellow" />
+
+  <!-- Buildings -->
+  <rect x="300" y="350" width="100" height="150" fill="darkgray" />
+  <rect x="500" y="250" width="200" height="250" fill="gray" />
+  <rect x="800" y="300" width="150" height="200" fill="darkgray" />
+  
+  <rect x="2700" y="350" width="100" height="150" fill="gray" />
+
+  <rect x="3500" y="350" width="100" height="150" fill="darkgray" />
+  <rect x="3700" y="250" width="200" height="250" fill="gray" />
+
+  <!-- Trees -->
+  <rect x="1250" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="1260" cy="450" r="30" fill="forestgreen" />
+  <rect x="1450" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="1460" cy="450" r="30" fill="forestgreen" />
+  <rect x="1650" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="1660" cy="450" r="30" fill="forestgreen" />
+  <rect x="1850" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="1860" cy="450" r="30" fill="forestgreen" />
+  <rect x="2050" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="2060" cy="450" r="30" fill="forestgreen" />
+  <rect x="2250" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="2260" cy="450" r="30" fill="forestgreen" />
+  <rect x="2850" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="2860" cy="450" r="30" fill="forestgreen" />
+  <rect x="3050" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="3060" cy="450" r="30" fill="forestgreen" />
+  <rect x="3250" y="450" width="20" height="50" fill="saddlebrown" />
+  <circle cx="3260" cy="450" r="30" fill="forestgreen" />
 </svg>
