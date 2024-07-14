@@ -1,10 +1,72 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4000 600">
-  <!-- Background sky -->
-  <rect width="4000" height="600" fill="lightblue" />
-
-  <!-- Ground -->
-  <rect y="500" width="4000" height="100" fill="green" />
-
+  <!-- Sky background -->
+  <rect width="4000" height="600" fill="#87CEEB" />
+  
   <!-- Sun -->
-  <circle cx="2000" cy="100" r="50" fill="yellow" />
+  <circle cx="3800" cy="100" r="60" fill="#FFD700" />
+  <circle cx="3800" cy="100" r="70" fill="#FFD700" opacity="0.3" />
+  
+  <!-- Ground -->
+  <rect y="500" width="4000" height="100" fill="#7CFC00" />
+  
+  <!-- Road -->
+  <rect y="520" width="4000" height="60" fill="#808080" />
+  <rect y="549" width="4000" height="2" fill="#FFFFFF" stroke="#FFFFFF" stroke-dasharray="40 20" />
+  
+  <!-- Houses -->
+  <!-- House 1: Traditional -->
+  <g transform="translate(300, 350)">
+    <rect width="150" height="150" fill="#F4A460" />
+    <polygon points="0,0 75,50 150,0" fill="#8B4513" />
+    <rect x="30" y="60" width="40" height="40" fill="#87CEEB" />
+    <rect x="90" y="60" width="40" height="40" fill="#87CEEB" />
+    <rect x="60" y="150" width="30" height="50" fill="#8B4513" />
+  </g>
+  
+  <!-- House 2: Modern -->
+  <g transform="translate(600, 320)">
+    <rect width="180" height="180" fill="#B0C4DE" />
+    <rect x="20" y="40" width="50" height="50" fill="#87CEEB" />
+    <rect x="110" y="40" width="50" height="50" fill="#87CEEB" />
+    <rect x="20" y="120" width="50" height="50" fill="#87CEEB" />
+    <rect x="75" y="180" width="30" height="50" fill="#4682B4" />
+  </g>
+  
+  <!-- House 3: Cottage -->
+  <g transform="translate(1000, 380)">
+    <rect width="130" height="120" fill="#DEB887" />
+    <polygon points="0,0 65,40 130,0" fill="#8B4513" />
+    <rect x="25" y="50" width="35" height="35" fill="#87CEEB" />
+    <rect x="80" y="50" width="35" height="35" fill="#87CEEB" />
+    <rect x="50" y="120" width="30" height="40" fill="#A0522D" />
+  </g>
+  
+  <!-- Trees -->
+  <g id="tree1">
+    <rect x="0" y="450" width="20" height="50" fill="#8B4513" />
+    <circle cx="10" cy="430" r="35" fill="#228B22" />
+    <circle cx="0" cy="440" r="25" fill="#32CD32" />
+    <circle cx="20" cy="440" r="25" fill="#32CD32" />
+  </g>
+  
+  <g id="tree2">
+    <rect x="0" y="460" width="25" height="40" fill="#A0522D" />
+    <circle cx="12" cy="420" r="40" fill="#006400" />
+    <circle cx="0" cy="430" r="30" fill="#008000" />
+    <circle cx="25" cy="430" r="30" fill="#008000" />
+  </g>
+  
+  <!-- Tree placements -->
+  <use href="#tree1" x="200" y="0" />
+  <use href="#tree2" x="450" y="0" />
+  <use href="#tree1" x="850" y="0" />
+  <use href="#tree2" x="1200" y="0" />
+  <use href="#tree1" x="1500" y="0" />
+  <use href="#tree2" x="1800" y="0" />
+  <use href="#tree1" x="2100" y="0" />
+  <use href="#tree2" x="2400" y="0" />
+  <use href="#tree1" x="2700" y="0" />
+  <use href="#tree2" x="3000" y="0" />
+  <use href="#tree1" x="3300" y="0" />
+  <use href="#tree2" x="3600" y="0" />
 </svg>
