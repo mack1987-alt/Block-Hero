@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4000 600">
+  <!-- Background sky -->
+  <rect width="4000" height="600" fill="lightblue" />
+
+  <!-- Ground -->
+  <rect y="500" width="4000" height="100" fill="green" />
+
+  <!-- Sun -->
+  <circle cx="2000" cy="100" r="50" fill="yellow" />
+</svg>
