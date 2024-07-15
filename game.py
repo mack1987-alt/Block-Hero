@@ -1,7 +1,7 @@
 import pygame
 import sys
 import random
-from constants import GREEN, WHITE, BLACK, DARK_GREEN, RED, LIGHT_BLUE, SHADOW_COLOR, GROUND_HEIGHT, MAX_WIDTH, HEIGHT, FPS, PAUSE_SYMBOL_X, PAUSE_SYMBOL_Y, PLAYER_SIZE, ENEMY_SIZE
+from constants import *
 from player import Player
 from enemy import Enemy
 from cloud import Cloud
@@ -9,36 +9,38 @@ from debug import Debug
 
 class Game:
     def __init__(self):
-        print("Initializing")
         pygame.init()
         debug = Debug()
 
-        print("Creating window...")
-        self.screen = pygame.display.set_mode((MAX_WIDTH, HEIGHT))
+        print("Initializing window...")
+        self.screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption("Block-Hero")
         
-        print("Finding levels...")
+        print("Initializing levels...")
         self.levels = [
-            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level1_bg.png", "enemies": 5, "clouds": 10},
-            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level2_bg.png", "enemies": 7, "clouds": 12},
-            # Add more levels as needed
+            {"background": "level1_bg.png", "enemies": NUM_LVL1_ENEMIES, "clouds": NUM_LVL1_CLOUDS},
+            {"background": "level2_bg.png", "enemies": NUM_LVL2_ENEMIES, "clouds": NUM_LVL2_CLOUDS},
+            #{"background": "level3_bg.png", "enemies": NUM_LVL3_ENEMIES, "clouds": NUM_LVL3_CLOUDS},
+            #{"background": "level4_bg.png", "enemies": NUM_LVL4_ENEMIES, "clouds": NUM_LVL4_CLOUDS},
+            #{"background": "level5_bg.png", "enemies": NUM_LVL5_ENEMIES, "clouds": NUM_LVL5_CLOUDS},
         ]
 
         self.current_level = 0
-        print("Loading level...")
+        print("Initializing level...")
         self.load_level(self.current_level)
 
-        print("Finding menu bg...")
-        self.menu_background = pygame.image.load("/home/mcuser/Documents/GitHub/Block-Hero/menu_bg.png")
-        self.menu_background = pygame.transform.scale(self.menu_background, (MAX_WIDTH, HEIGHT))
+        print("Initializing menu resources...")
+        self.menu_background = pygame.image.load("menu_bg2.png")
+        self.menu_background = pygame.transform.scale(self.menu_background, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
-        print("Finding time...")
+        print("Initializing time...")
         self.clock = pygame.time.Clock()
         print("Clock loaded.")
 
-        print("Finding gravity...")
-        self.gravity = 1  # Initialize gravity here
-        self.scroll = 0  # Initialize scroll here
+        print("Initializing gravity...")
+        self.gravity = 1
+        print("Initializing scroll...")
+        self.scroll = 0
         
         print("Loading...")
         self.game_active = True
@@ -48,14 +50,14 @@ class Game:
     def load_level(self, level_index):
         level = self.levels[level_index]
         self.background = pygame.image.load(level["background"])
-        self.background = pygame.transform.scale(self.background, (4000, HEIGHT))  # Resize to match level width and window height
+        self.background = pygame.transform.scale(self.background, (MAP_WIDTH, WINDOW_HEIGHT))  # Resize to match level width and window WINDOW_HEIGHT
         print("Background loaded.")
 
         print("Loading game entities...")
         self.player = Player(20, GROUND_HEIGHT, (30, 80))
         self.player_health_font = pygame.font.Font(None, 24)
-        self.enemies = [Enemy(random.randint(MAX_WIDTH, MAX_WIDTH + 500), GROUND_HEIGHT, ENEMY_SIZE, 2) for _ in range(level["enemies"])]
-        self.clouds = [Cloud(random.randint(MAX_WIDTH, MAX_WIDTH + 4000), random.randint(50, 200), random.randint(30, 80), random.randint(20, 60)) for _ in range(level["clouds"])]
+        self.enemies = [Enemy(random.randint(WINDOW_WIDTH, DEFAULT_ENEMY_SPAWN_WIDTH), DEFAULT_ENEMY_SPAWN_HEIGHT, ENEMY_SIZE, ENEMY_SPEED) for _ in range(level["enemies"])]
+        self.clouds = [Cloud(random.randint(WINDOW_WIDTH, WINDOW_WIDTH + MAP_WIDTH), random.randint(50, 200), random.randint(30, 80), random.randint(20, 60)) for _ in range(level["clouds"])]
         print("Entities defined...")
 
     def handle_events(self):
@@ -68,7 +70,7 @@ class Game:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 print(f"Mouse coordinates: ({mouse_x}, {mouse_y})")
                 
-                if MAX_WIDTH - 40 <= mouse_x <= MAX_WIDTH - 20 and 20 <= mouse_y <= 60:  # Update the collision detection for the pause button
+                if WINDOW_WIDTH - 40 <= mouse_x <= WINDOW_WIDTH - 20 and 20 <= mouse_y <= 60:  # Update the collision detection for the pause button
                     if not self.paused:
                         self.paused = True
                         self.show_pause_menu()
@@ -86,21 +88,22 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     # Check if the mouse click is on the "Resume" button
-                    resume_button_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2, 100, 50)
+                    resume_button_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2, 100, 50)
                     if resume_button_rect.collidepoint(mouse_x, mouse_y):
                         # Resume the game when clicking the "Resume" button
                         self.paused = False
                         print("Resume.")
-                    main_menu_button_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2 + 60, 100, 50)
+                    main_menu_button_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2 + 60, 100, 50)
                     if main_menu_button_rect.collidepoint(mouse_x, mouse_y):
                         self.paused = False
                         print("Returning to menu...")
+                        self.reset_game_state()
                         self.show_menu()  # This will display the main menu and handle user input
-
+                        
             # Draw the pause menu
             self.screen.fill((0, 0, 0))  # Fill the screen with black
-            resume_button_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2, 100, 50)
-            main_menu_button_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2 + 60, 100, 50)
+            resume_button_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2, 100, 50)
+            main_menu_button_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2 + 60, 100, 50)
 
             pygame.draw.rect(self.screen, GREEN, resume_button_rect)
             pygame.draw.rect(self.screen, RED, main_menu_button_rect)
@@ -108,8 +111,8 @@ class Game:
             resume_text = self.player_health_font.render("Resume", True, WHITE)
             main_menu_text = self.player_health_font.render("Main Menu", True, WHITE)
 
-            self.screen.blit(resume_text, (MAX_WIDTH // 2 - resume_text.get_width() // 2, HEIGHT // 2 + 10))
-            self.screen.blit(main_menu_text, (MAX_WIDTH // 2 - main_menu_text.get_width() // 2, HEIGHT // 2 + 70))
+            self.screen.blit(resume_text, (WINDOW_WIDTH // 2 - resume_text.get_width() // 2, WINDOW_HEIGHT // 2 + 10))
+            self.screen.blit(main_menu_text, (WINDOW_WIDTH // 2 - main_menu_text.get_width() // 2, WINDOW_HEIGHT // 2 + 70))
 
             pygame.display.flip()
 
@@ -119,7 +122,7 @@ class Game:
 
         # Check for collision with enemies
         for enemy in self.enemies:
-            enemy.update(self.player.rect.x, self.enemies, MAX_WIDTH, self.player)
+            enemy.update(self.player.rect.x, self.enemies, WINDOW_WIDTH, self.player)
         # Updating the state of each cloud based on the current scroll position.
         for cloud in self.clouds:
             cloud.update(self.scroll)
@@ -142,7 +145,7 @@ class Game:
         self.screen.blit(self.background, (0 - self.scroll, 0))
 
         # Draw the ground rectangle based on the current scroll position
-        #pygame.draw.rect(self.screen, DARK_GREEN, (0 - self.scroll, GROUND_HEIGHT, 4000, HEIGHT - GROUND_HEIGHT))
+        #pygame.draw.rect(self.screen, DARK_GREEN, (0 - self.scroll, GROUND_HEIGHT, MAP_WIDTH, WINDOW_HEIGHT - GROUND_HEIGHT))
 
         # Draw the player and his shadow
         self.player.draw(self.screen, self.scroll)
@@ -170,45 +173,33 @@ class Game:
         self.screen.blit(health_text, (ui_bar_rect.right + 10, 30))
 
         # Draw the pause/settings button at the bottom
-        # pause_button_rect = pygame.Rect(MAX_WIDTH - 40, GROUND_HEIGHT + 10, 30, 30)
+        # pause_button_rect = pygame.Rect(WINDOW_WIDTH - 40, GROUND_HEIGHT + 10, 30, 30)
         # Draw the pause/settings button at the top
-        pause_button_rect = pygame.Rect(MAX_WIDTH - 40, 30, 30, 30)
+        pause_button_rect = pygame.Rect(WINDOW_WIDTH - 40, 30, 30, 30)
         pygame.draw.rect(self.screen, BLACK, pause_button_rect)
 
         # Draw the pause symbol (two white bars) at the bottom
-        # pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X-10, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
-        # pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X + 2, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
+        # pygame.draw.rect(self.screen, WHITE, (WINDOW_WIDTH - PAUSE_SYMBOL_X-10, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
+        # pygame.draw.rect(self.screen, WHITE, (WINDOW_WIDTH - PAUSE_SYMBOL_X + 2, GROUND_HEIGHT + PAUSE_SYMBOL_Y, 5, 15))
         # Draw the pause symbol (two white bars) at the top
-        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X-10, 20 + PAUSE_SYMBOL_Y, 5, 15))
-        pygame.draw.rect(self.screen, WHITE, (MAX_WIDTH - PAUSE_SYMBOL_X + 2, 20 + PAUSE_SYMBOL_Y, 5, 15))
+        pygame.draw.rect(self.screen, WHITE, (WINDOW_WIDTH - PAUSE_SYMBOL_X-10, 20 + PAUSE_SYMBOL_Y, 5, 15))
+        pygame.draw.rect(self.screen, WHITE, (WINDOW_WIDTH - PAUSE_SYMBOL_X + 2, 20 + PAUSE_SYMBOL_Y, 5, 15))
 
         pygame.display.flip()
 
-    def reset_game(self):
-        # Reset the player's position and health
+    def reset_game_state(self):
+        self.current_level = 0  # Change this from 1 to 0
+        self.load_level(self.current_level)
         self.player.rect.x = 20
         self.player.health = 100
-
         # Reset the enemy positions
         for enemy in self.enemies:
-            enemy.rect.x = random.randint(MAX_WIDTH, MAX_WIDTH + 500)
-
-        # Reset the scroll position
+            enemy.rect.x = random.randint(WINDOW_WIDTH, WINDOW_WIDTH + 500)
         self.scroll = 0
-
-        # Resume the game
-        self.run()
 
     def new_game(self):
-        # Reset the player's position and health
-        self.player.rect.x = 20
-        self.player.health = 100
+        self.reset_game_state()
 
-        for enemy in self.enemies:
-            enemy.rect.x = random.randint(MAX_WIDTH, MAX_WIDTH + 500)
-
-        # Reset the scroll position
-        self.scroll = 0
 
     def run(self):
         debug = Debug()
@@ -219,7 +210,7 @@ class Game:
             self.update_entities()
             self.draw_entities()
             # Calculate scroll after updating entities
-            self.scroll = max(min(self.player.rect.x - MAX_WIDTH // 2, 4000 - MAX_WIDTH), 0)
+            self.scroll = max(min(self.player.rect.x - WINDOW_WIDTH // 2, MAP_WIDTH - WINDOW_WIDTH), 0)
 
             # Cap the frame rate
             self.clock.tick(FPS)
@@ -250,9 +241,9 @@ class Game:
         text = game_over_font.render("You Lost...", True, RED)
 
         # Create a surface for the game over screen
-        game_over_screen = pygame.Surface((MAX_WIDTH, HEIGHT))
+        game_over_screen = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))
         game_over_screen.fill((0, 0, 0))  # Fill the screen with black
-        game_over_screen.blit(text, (MAX_WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
+        game_over_screen.blit(text, (WINDOW_WIDTH // 2 - text.get_width() // 2, WINDOW_HEIGHT // 2 - text.get_WINDOW_HEIGHT() // 2))
 
         # Display the game over screen on top of the main screen
         self.screen.blit(game_over_screen, (0, 0))
@@ -273,8 +264,8 @@ class Game:
             # Draw the background image
             self.screen.blit(self.menu_background, (0, 0))
 
-            play_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2 - 50, 100, 50)
-            quit_rect = pygame.Rect(MAX_WIDTH // 2 - 50, HEIGHT // 2 + 50, 100, 50)
+            play_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2 - 50, 100, 50)
+            quit_rect = pygame.Rect(WINDOW_WIDTH // 2 - 50, WINDOW_HEIGHT // 2 + 50, 100, 50)
 
             pygame.draw.rect(self.screen, GREEN, play_rect)
             pygame.draw.rect(self.screen, RED, quit_rect)
@@ -288,7 +279,7 @@ class Game:
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     mouse_x, mouse_y = pygame.mouse.get_pos()
                     if play_rect.collidepoint(mouse_x, mouse_y):
-                        self.reset_game()  # Reset the game state
+                        self.new_game()  # Reset the game state
                         return 1  # Return 1 for Play
                     elif quit_rect.collidepoint(mouse_x, mouse_y):
                         debug.pause_and_clear()
@@ -298,8 +289,8 @@ class Game:
             menu_font = pygame.font.Font(None, 36)
             play_text = menu_font.render("Play", True, WHITE)
             quit_text = menu_font.render("Quit", True, WHITE)
-            self.screen.blit(play_text, (MAX_WIDTH // 2 - 25, HEIGHT // 2 - 40))
-            self.screen.blit(quit_text, (MAX_WIDTH // 2 - 25, HEIGHT // 2 + 60))
+            self.screen.blit(play_text, (WINDOW_WIDTH // 2 - 25, WINDOW_HEIGHT // 2 - 40))
+            self.screen.blit(quit_text, (WINDOW_WIDTH // 2 - 25, WINDOW_HEIGHT // 2 + 60))
             pygame.display.flip()
 
     def show_menu(self):
