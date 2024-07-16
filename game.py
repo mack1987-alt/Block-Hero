@@ -18,8 +18,8 @@ class Game:
         
         print("Initializing levels...")
         self.levels = [
-            {"background": "level1_bg.png", "enemies": NUM_LVL1_ENEMIES, "clouds": NUM_LVL1_CLOUDS},
-            {"background": "level2_bg.png", "enemies": NUM_LVL2_ENEMIES, "clouds": NUM_LVL2_CLOUDS},
+            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level1_bg.png", "enemies": NUM_LVL1_ENEMIES, "clouds": NUM_LVL1_CLOUDS},
+            {"background": "/home/mcuser/Documents/GitHub/Block-Hero/level2_bg.png", "enemies": NUM_LVL2_ENEMIES, "clouds": NUM_LVL2_CLOUDS},
             #{"background": "level3_bg.png", "enemies": NUM_LVL3_ENEMIES, "clouds": NUM_LVL3_CLOUDS},
             #{"background": "level4_bg.png", "enemies": NUM_LVL4_ENEMIES, "clouds": NUM_LVL4_CLOUDS},
             #{"background": "level5_bg.png", "enemies": NUM_LVL5_ENEMIES, "clouds": NUM_LVL5_CLOUDS},
@@ -30,7 +30,7 @@ class Game:
         self.load_level(self.current_level)
 
         print("Initializing menu resources...")
-        self.menu_background = pygame.image.load("menu_bg2.png")
+        self.menu_background = pygame.image.load("/home/mcuser/Documents/GitHub/Block-Hero/menu_bg2.png")
         self.menu_background = pygame.transform.scale(self.menu_background, (WINDOW_WIDTH, WINDOW_HEIGHT))
 
         print("Initializing time...")
